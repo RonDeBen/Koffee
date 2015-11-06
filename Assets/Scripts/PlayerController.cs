@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour {
     public GameObject p_RightSword;
     public GameObject p_LeftSword;
 
+    public Transform feet;
+
 
 	private bool grounded = false;
 
@@ -91,7 +93,9 @@ public class PlayerController : MonoBehaviour {
     private void Flip()
     {
         m_FacingRight = !m_FacingRight;
-
+        Vector3 facing = feet.localScale;
+        facing.x *= -1;
+        feet.localScale = facing;
     }
 
     private float lastAttack;
