@@ -9,12 +9,10 @@ public class PlayerController : MonoBehaviour {
 	public GameObject myBean;
 
     public float attackDuration;
-    public Transform t_RightSword;
-    public Transform t_LeftSword;
-    public GameObject p_RightSword;
-    public GameObject p_LeftSword;
+    public GameObject holdingSword, swordLeft, swordRight;
 
     public Transform feet;
+    public Transform hands;
 
 
 	private bool grounded = false;
@@ -23,6 +21,7 @@ public class PlayerController : MonoBehaviour {
 	private Transform groundCheck;
     private bool m_FacingRight = true;
     private GameObject sword;
+    private bool isAttacking;
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();
@@ -64,7 +63,9 @@ public class PlayerController : MonoBehaviour {
 
         if(sword != null && (Time.time > lastAttack + attackDuration))
         {
-            GameObject.Destroy(sword);
+            sword.SetActive(false);
+            holdingSword.SetActive(true);
+            isAttacking = false;
         }
 
 		if (attack){
@@ -93,6 +94,12 @@ public class PlayerController : MonoBehaviour {
     private void Flip()
     {
         m_FacingRight = !m_FacingRight;
+        SideSwitch(feet);
+        SideSwitch(hands);
+    }
+
+    private void SideSwitch(Transform feet)
+    {
         Vector3 facing = feet.localScale;
         facing.x *= -1;
         feet.localScale = facing;
@@ -101,23 +108,20 @@ public class PlayerController : MonoBehaviour {
     private float lastAttack;
     private void Attack()
     {
-        if(sword == null)
+        if(!isAttacking)
         {
-            
+            holdingSword.SetActive(false);
             if (m_FacingRight)
             {
-                sword = GameObject.Instantiate(p_RightSword);
-                sword.transform.SetParent(t_RightSword);
-                sword.transform.localPosition = Vector3.zero;
-                sword.transform.localScale = new Vector3(0.04783243f, 0.04783245f, 0.04783245f);
+                swordRight.SetActive(true);
+                sword = swordRight;
             }
             else
             {
-                sword = GameObject.Instantiate(p_LeftSword);
-                sword.transform.SetParent(t_LeftSword);
-                sword.transform.localPosition = Vector3.zero;
-                sword.transform.localScale = new Vector3(-0.04783243f, 0.04783245f, 0.04783245f);
+                swordLeft.SetActive(true);
+                sword = swordLeft;
             }
+            isAttacking = true;
             lastAttack = Time.time;
         }
     }
