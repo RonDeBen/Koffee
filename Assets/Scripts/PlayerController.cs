@@ -8,12 +8,21 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject myBean;
 
+    public float attackDuration;
+    public Transform t_RightSword;
+    public Transform t_LeftSword;
+    public GameObject p_RightSword;
+    public GameObject p_LeftSword;
+
+
 	private bool grounded = false;
 
 	private Rigidbody2D rb;
 	private Transform groundCheck;
+    private bool m_FacingRight = true;
+    private GameObject sword;
 
-	void Start(){
+    void Start(){
 		rb = GetComponent<Rigidbody2D>();
 		groundCheck = transform.Find("groundCheck");
 	}
@@ -30,11 +39,15 @@ public class PlayerController : MonoBehaviour {
 
 		if (left){
 			rb.velocity = new Vector3(-speed, rb.velocity.y, 0f);
+            if (m_FacingRight)
+                Flip();
 		}
 
 		if (right){
 			rb.velocity = new Vector3(speed, rb.velocity.y, 0f);
-		}
+            if (!m_FacingRight)
+                Flip();
+        }
 
 		if (!(right || left)){
 			Vector3 playerVelocity = rb.velocity;
@@ -47,7 +60,13 @@ public class PlayerController : MonoBehaviour {
 			rb.AddForce(Vector3.up * jumpForce);
 		}	
 
-		if(attack){
+        if(sword != null && (Time.time > lastAttack + attackDuration))
+        {
+            GameObject.Destroy(sword);
+        }
+
+		if (attack){
+            Attack();
 		}
 	}
 
@@ -68,4 +87,34 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 	}
+
+    private void Flip()
+    {
+        m_FacingRight = !m_FacingRight;
+
+    }
+
+    private float lastAttack;
+    private void Attack()
+    {
+        if(sword == null)
+        {
+            
+            if (m_FacingRight)
+            {
+                sword = GameObject.Instantiate(p_RightSword);
+                sword.transform.SetParent(t_RightSword);
+                sword.transform.localPosition = Vector3.zero;
+                sword.transform.localScale = new Vector3(0.04783243f, 0.04783245f, 0.04783245f);
+            }
+            else
+            {
+                sword = GameObject.Instantiate(p_LeftSword);
+                sword.transform.SetParent(t_LeftSword);
+                sword.transform.localPosition = Vector3.zero;
+                sword.transform.localScale = new Vector3(-0.04783243f, 0.04783245f, 0.04783245f);
+            }
+            lastAttack = Time.time;
+        }
+    }
 }
