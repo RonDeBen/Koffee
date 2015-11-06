@@ -37,4 +37,18 @@ public class EnemyController : MonoBehaviour {
 	public void SetDirection(bool isMovingRight){
 		this.isMovingRight = isMovingRight;
 	}
+
+    private void Die()
+    {
+        GameObject.Destroy(this.gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag.Equals("sword"))
+        {
+            Die();
+        }
+
+    }
 }
