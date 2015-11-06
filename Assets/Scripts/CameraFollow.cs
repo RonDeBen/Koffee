@@ -3,6 +3,11 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour 
 {
+<<<<<<< HEAD
+=======
+	public GameObject followObject;
+
+>>>>>>> 1ee59ae11425e849843f16bebd81f80c2771358f
 	public float xMargin = 1f;		// Distance in the x axis the player can move before the camera follows.
 	public float yMargin = 1f;		// Distance in the y axis the player can move before the camera follows.
 	public float xSmooth = 8f;		// How smoothly the camera catches up with it's target movement in the x axis.
@@ -11,13 +16,14 @@ public class CameraFollow : MonoBehaviour
 	public Vector2 minXAndY;		// The minimum x and y coordinates the camera can have.
 
 
-	public Transform player;		// Reference to the player's transform.
+
+	private Transform player;		// Reference to the player's transform.
 
 
 	void Awake ()
 	{
 		// Setting up the reference.
-		//player = GameObject.FindGameObjectWithTag("Player").transform;
+		player = followObject.transform;
 	}
 
 
