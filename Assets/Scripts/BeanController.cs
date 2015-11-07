@@ -4,7 +4,6 @@ using System.Collections;
 public class BeanController : MonoBehaviour {
 
 	void Start(){
-		Debug.Log(gameObject.GetComponent<BoxCollider2D>().isTrigger);
 	}
 
 
