@@ -11,4 +11,6 @@ public class BeanController : MonoBehaviour {
 		Object.Destroy(this.gameObject);
 	}
 
+	
+
 }
