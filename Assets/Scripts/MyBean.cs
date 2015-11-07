@@ -19,6 +19,7 @@ public class MyBean : MonoBehaviour {
 				BeanSpawner.SpawnNewBean();
 				Score.AddPoints(250);
 				CoffeeScriptHueHueHue.ReceiveBean();
+				MusicMiddleware.playSound("Good Sound");
 			}
 		}
 	}
