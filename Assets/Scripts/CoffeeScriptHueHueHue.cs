@@ -43,7 +43,7 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 	}
 
 	public static void RestartGame(){
-		beanCount = 0;
+		beanCount = 1;
 		Application.LoadLevel("final");
 		Time.timeScale = 1;
 	}
@@ -53,7 +53,7 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
         {
             PlayerPrefs.SetInt("Score", Score.GetScore());
             PlayerPrefs.SetInt("Level", Score.GetLevel() + 1);
-            RestartGame();
+            Application.LoadLevel("Win");
         }
         else
         {
