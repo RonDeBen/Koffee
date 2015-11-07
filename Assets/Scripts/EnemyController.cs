@@ -19,6 +19,8 @@ public class EnemyController : MonoBehaviour {
 	private Transform leftCheck, rightCheck;
 	bool isMovingRight, rightWall, leftWall;
 
+    public float timeTillGameover =1f;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
@@ -95,6 +97,8 @@ public class EnemyController : MonoBehaviour {
         if (coll.gameObject.tag==("coffee_pot"))
         {
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            StartCoroutine("GameEnd");
+
         }
     }
 
@@ -119,5 +123,11 @@ public class EnemyController : MonoBehaviour {
     	}
     	triggerCollider.enabled = true;
     	flashing = false;
+    }
+
+    IEnumerator GameEnd()
+    {
+        yield return new WaitForSeconds(timeTillGameover);
+        CoffeeScriptHueHueHue.ReceiveEnemy();
     }
 }

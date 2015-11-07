@@ -15,7 +15,7 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 	private static Image canvasImage;
 	private static Text gameOverText;
 
-	private static int beanCount = 4;
+	private static int beanCount = 1;
 
 
 	// Use this for initialization
