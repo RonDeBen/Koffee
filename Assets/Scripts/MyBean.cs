@@ -20,4 +20,14 @@ public class MyBean : MonoBehaviour {
 			}
 		}
 	}
+
+    void Update()
+    {
+        SpriteRenderer sprender = gameObject.GetComponent<SpriteRenderer>();
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        if(sprender.enabled && Mathf.Approximately(rb.gravityScale,0f) && !Vector3.Equals(gameObject.transform.position, beanHome.transform.position))
+        {
+            gameObject.transform.position = beanHome.transform.position;
+        }
+    }
 }
