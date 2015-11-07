@@ -67,7 +67,8 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 
 	public static void ReceiveEnemy(){
 		//you lose the game
-		PlayerPrefs.DeleteKey("Score");
+		PlayerPrefs.SetInt("Score", 0);
+		PlayerPrefs.SetInt("Level", 1);
 		canvasImage.color = panelColor;
 		gameOverText.enabled = true;
 		Time.timeScale = 0;
