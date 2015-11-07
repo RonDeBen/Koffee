@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
@@ -6,15 +6,15 @@ public class PlayerController : MonoBehaviour {
 	public float speed;
 	public float jumpForce;
 
-	public GameObject myBean;
+	public GameObject myBean, leftFoot, rightFoot;
+
+	public float duration, magnitude;
 
     public float attackDuration;
     public Transform t_RightSword;
     public Transform t_LeftSword;
     public GameObject p_RightSword;
     public GameObject p_LeftSword;
-
-    public Transform feet;
 
 
 	private bool grounded = false;
@@ -24,9 +24,14 @@ public class PlayerController : MonoBehaviour {
     private bool m_FacingRight = true;
     private GameObject sword;
 
+    private SpriteRenderer leftFootSprender, rightFootSprender;
+
     void Start(){
 		rb = GetComponent<Rigidbody2D>();
 		groundCheck = transform.Find("groundCheck");
+
+		leftFootSprender = leftFoot.GetComponent<SpriteRenderer>();
+		rightFootSprender = rightFoot.GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -41,14 +46,16 @@ public class PlayerController : MonoBehaviour {
 
 		if (left){
 			rb.velocity = new Vector3(-speed, rb.velocity.y, 0f);
-            if (m_FacingRight)
-                Flip();
+			leftFootSprender.sortingOrder = -1;
+			rightFootSprender.sortingOrder = 2;
+			m_FacingRight = false;
 		}
 
 		if (right){
 			rb.velocity = new Vector3(speed, rb.velocity.y, 0f);
-            if (!m_FacingRight)
-                Flip();
+			leftFootSprender.sortingOrder = 2;
+			rightFootSprender.sortingOrder = -1;
+			m_FacingRight = true;
         }
 
 		if (!(right || left)){
@@ -88,15 +95,11 @@ public class PlayerController : MonoBehaviour {
 				rb.gravityScale = 3f;
 			}
 		}
-	}
 
-    private void Flip()
-    {
-        m_FacingRight = !m_FacingRight;
-        Vector3 facing = feet.localScale;
-        facing.x *= -1;
-        feet.localScale = facing;
-    }
+		if (other.tag == "enemy"){
+			StartCoroutine(Shake());
+		}
+	}
 
     private float lastAttack;
     private void Attack()
@@ -121,4 +124,31 @@ public class PlayerController : MonoBehaviour {
             lastAttack = Time.time;
         }
     }
+
+    IEnumerator Shake() {
+	        
+	    float elapsed = 0.0f;
+	    
+	    Vector3 originalCamPos = Camera.main.transform.position;
+	    
+	    while (elapsed < duration) {
+	        
+	        elapsed += Time.deltaTime;          
+	        
+	        float percentComplete = elapsed / duration;         
+	        float damper = 1.0f - Mathf.Clamp(4.0f * percentComplete - 3.0f, 0.0f, 1.0f);
+	        
+	        // map value to [-1, 1]
+	        float x = Random.value * 2.0f - 1.0f;
+	        float y = Random.value * 2.0f - 1.0f;
+	        x *= magnitude * damper;
+	        y *= magnitude * damper;
+	        
+	        Camera.main.transform.position = new Vector3(x, y, originalCamPos.z);
+	            
+	        yield return null;
+	    }
+	    
+	    Camera.main.transform.position = originalCamPos;
+	}
 }
