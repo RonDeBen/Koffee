@@ -8,17 +8,26 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 	public GameObject panelObj;
 	public Text gameOverTextObj;
 	public Color gameOverColor;
+    public static CoffeeScriptHueHueHue coffeePot;
 	private static Color panelColor;
 	private static Sprite[] sprites;
 	private static SpriteRenderer sr;
 	private static Image canvasImage;
 	private static Text gameOverText;
 
-	private static int beanCount = 0;
+	private static int beanCount = 4;
 
 
 	// Use this for initialization
 	void Start () {
+        if(coffeePot != null)
+        {
+            GameObject.Destroy(gameObject);
+        }
+        else
+        {
+            coffeePot = this;
+        }
 		sr = gameObject.GetComponent<SpriteRenderer>();
 		sprites = coffeeProgressSprites;
 		panelColor = gameOverColor;
@@ -40,13 +49,20 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 	}
 
 	public static void ReceiveBean(){
-		sr.sprite = sprites[beanCount];
-		if(beanCount == sprites.Length - 1){
-			PlayerPrefs.SetInt("Score", Score.GetScore());
-			PlayerPrefs.SetInt("Level", Score.GetLevel() + 1);
-			RestartGame();
-		}
+        if (beanCount == sprites.Length + 1)
+        {
+            PlayerPrefs.SetInt("Score", Score.GetScore());
+            PlayerPrefs.SetInt("Level", Score.GetLevel() + 1);
+            RestartGame();
+        }
+        else
+        {
+            sr.sprite = sprites[beanCount - 1];
+        }
+        Debug.Log(beanCount);
+		
 		beanCount++;
+        //Debug.Break();
 	}
 
 	public static void ReceiveEnemy(){

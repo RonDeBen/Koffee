@@ -90,6 +90,14 @@ public class EnemyController : MonoBehaviour {
 
     }
 
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag==("coffee_pot"))
+        {
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        }
+    }
+
         void Flip()
     {
         Vector3 toFlip = looks.transform.localScale;

@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!stunned){
-			grounded = Physics2D.Linecast(gameObject.transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("floor")); 
+			grounded = Physics2D.Linecast(gameObject.transform.position, groundCheck.position, (1 << LayerMask.NameToLayer("floor")) | (1<<LayerMask.NameToLayer("wall"))); 
 
 			bool left = Input.GetKey("left");
 			bool right = Input.GetKey("right");
