@@ -56,7 +56,7 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 	}
 
 	public static void RestartGame(){
-		beanCount = 0;
+		beanCount = 1;
 		Application.LoadLevel("final");
 		Time.timeScale = 1;
 	}
