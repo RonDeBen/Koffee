@@ -4,6 +4,7 @@ using System.Collections;
 public class MyBean : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
+		Debug.Log(other.tag);
 		if(other.tag == "coffee_pot"){
 			SpriteRenderer sprender = gameObject.GetComponent<SpriteRenderer>();
 			sprender.enabled = false;
