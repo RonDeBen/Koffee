@@ -6,7 +6,9 @@ public class PlayerController : MonoBehaviour {
 	public float speed;
 	public float jumpForce;
 
-	public GameObject myBean, leftFoot, rightFoot;
+	public Sprite leftBody, rightBody;
+
+	public GameObject myBean, leftFoot, rightFoot, body;
 
 	public float duration, magnitude;
 
@@ -26,7 +28,7 @@ public class PlayerController : MonoBehaviour {
     private GameObject sword;
     private bool isAttacking;
 
-    private SpriteRenderer leftFootSprender, rightFootSprender;
+    private SpriteRenderer leftFootSprender, rightFootSprender, bodySprender;
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 
 		leftFootSprender = leftFoot.GetComponent<SpriteRenderer>();
 		rightFootSprender = rightFoot.GetComponent<SpriteRenderer>();
+		bodySprender = body.GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour {
 			rb.velocity = new Vector3(-speed, rb.velocity.y, 0f);
 			leftFootSprender.sortingOrder = -1;
 			rightFootSprender.sortingOrder = 2;
+			bodySprender.sprite = leftBody;
             if (m_FacingRight)
             {
                 Flip();
@@ -59,6 +63,7 @@ public class PlayerController : MonoBehaviour {
 
 		if (right){
 			rb.velocity = new Vector3(speed, rb.velocity.y, 0f);
+			bodySprender.sprite = rightBody;
 			leftFootSprender.sortingOrder = 2;
 			rightFootSprender.sortingOrder = -1;
             if (!m_FacingRight)
