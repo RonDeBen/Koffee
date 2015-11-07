@@ -5,14 +5,14 @@ public class Restarter : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		MusicMiddleware.playSound("Happy Jingle");
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        bool jump = Input.GetKeyDown(KeyCode.Z);
-        bool attack = Input.GetKeyDown(KeyCode.X);
-        if (jump || attack)
+        bool restart = Input.GetKeyDown(KeyCode.R);
+        if (restart)
         {
             CoffeeScriptHueHueHue.RestartGame();
         }
