@@ -122,6 +122,7 @@ public class PlayerController : MonoBehaviour {
         		beanRenderer.enabled = false;
         		BeanSpawner.SpawnNewBean();
         	}
+            other.GetComponentInParent<Animator>().SetTrigger("Strike");
             StartCoroutine(Shake());
         }
     }

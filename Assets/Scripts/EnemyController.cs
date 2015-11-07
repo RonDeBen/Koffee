@@ -90,7 +90,7 @@ public class EnemyController : MonoBehaviour {
 
     }
 
-    void Flip()
+        void Flip()
     {
         Vector3 toFlip = looks.transform.localScale;
         toFlip.x *= -1;

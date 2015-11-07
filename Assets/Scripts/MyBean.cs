@@ -6,11 +6,13 @@ public class MyBean : MonoBehaviour {
 	public GameObject beanHome;
 
 	void OnTriggerEnter2D(Collider2D other){
-		if(other.tag == "coffee_pot"){
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        if (other.tag == "coffee_pot" && !Mathf.Approximately(rb.gravityScale, 0f))
+        {
 			SpriteRenderer sprender = gameObject.GetComponent<SpriteRenderer>();
 			if(sprender.enabled){
 				sprender.enabled = false;
-				Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+				rb = gameObject.GetComponent<Rigidbody2D>();
 				rb.isKinematic = true;
 				rb.gravityScale = 0f;
 				gameObject.transform.position = beanHome.transform.position;
