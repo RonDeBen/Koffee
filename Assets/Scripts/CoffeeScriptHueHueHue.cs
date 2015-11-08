@@ -77,7 +77,7 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
         {
             sr.sprite = sprites[beanCount - 1];
         }
-        Debug.Log(beanCount);
+        // Debug.Log(beanCount);
 		
 		beanCount++;
         //Debug.Break();
