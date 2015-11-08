@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 	private Transform groundCheck;
     private bool m_FacingRight = true;
     private GameObject sword;
-    private bool isAttacking;
+    private bool isAttacking, stunned;
 
     private SpriteRenderer leftFootSprender, rightFootSprender, bodySprender;
 
@@ -41,58 +41,60 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		grounded = Physics2D.Linecast(gameObject.transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("floor")); 
+		if (!stunned){
+			grounded = Physics2D.Linecast(gameObject.transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("floor")); 
 
-		bool left = Input.GetKey("left");
-		bool right = Input.GetKey("right");
-		bool jump = Input.GetKeyDown(KeyCode.Z);
-		bool attack = Input.GetKeyDown(KeyCode.X);
+			bool left = Input.GetKey("left");
+			bool right = Input.GetKey("right");
+			bool jump = Input.GetKeyDown(KeyCode.Z);
+			bool attack = Input.GetKeyDown(KeyCode.X);
 
 
-		if (left){
-			rb.velocity = new Vector3(-speed, rb.velocity.y, 0f);
-			leftFootSprender.sortingOrder = -1;
-			rightFootSprender.sortingOrder = 2;
-			bodySprender.sprite = leftBody;
-            if (m_FacingRight)
-            {
-                Flip();
-            }
-			m_FacingRight = false;
-		}
+			if (left){
+				rb.velocity = new Vector3(-speed, rb.velocity.y, 0f);
+				leftFootSprender.sortingOrder = -1;
+				rightFootSprender.sortingOrder = 2;
+				bodySprender.sprite = leftBody;
+	            if (m_FacingRight)
+	            {
+	                Flip();
+	            }
+				m_FacingRight = false;
+			}
 
-		if (right){
-			rb.velocity = new Vector3(speed, rb.velocity.y, 0f);
-			bodySprender.sprite = rightBody;
-			leftFootSprender.sortingOrder = 2;
-			rightFootSprender.sortingOrder = -1;
-            if (!m_FacingRight)
-            {
-                Flip();
-            }
-            m_FacingRight = true;
-        }
+			if (right){
+				rb.velocity = new Vector3(speed, rb.velocity.y, 0f);
+				bodySprender.sprite = rightBody;
+				leftFootSprender.sortingOrder = 2;
+				rightFootSprender.sortingOrder = -1;
+	            if (!m_FacingRight)
+	            {
+	                Flip();
+	            }
+	            m_FacingRight = true;
+	        }
 
-		if (!(right || left)){
-			Vector3 playerVelocity = rb.velocity;
-			playerVelocity.x = 0.0f;
-			rb.velocity = playerVelocity;
-		}
+			if (!(right || left)){
+				Vector3 playerVelocity = rb.velocity;
+				playerVelocity.x = 0.0f;
+				rb.velocity = playerVelocity;
+			}
 
-		if (jump && grounded){
-			grounded = false;
-			rb.AddForce(Vector3.up * jumpForce);
-		}	
+			if (jump && grounded){
+				grounded = false;
+				rb.AddForce(Vector3.up * jumpForce);
+			}	
 
-        if(sword != null && (Time.time > lastAttack + attackDuration))
-        {
-            sword.SetActive(false);
-            holdingSword.SetActive(true);
-            isAttacking = false;
-        }
+	        if(sword != null && (Time.time > lastAttack + attackDuration))
+	        {
+	            sword.SetActive(false);
+	            holdingSword.SetActive(true);
+	            isAttacking = false;
+	        }
 
-		if (attack){
-            Attack();
+			if (attack){
+	            Attack();
+			}
 		}
 	}
 
@@ -121,7 +123,6 @@ public class PlayerController : MonoBehaviour {
     private void Flip()
     {
         m_FacingRight = !m_FacingRight;
-        //SideSwitch(feet);
         SideSwitch(hands);
     }
 
@@ -155,6 +156,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     IEnumerator Shake() {
+
+    	stunned = true;
+    	rb.velocity = Vector3.zero;
 	        
 	    float elapsed = 0.0f;
 	    
@@ -172,12 +176,17 @@ public class PlayerController : MonoBehaviour {
 	        float y = Random.value * 2.0f - 1.0f;
 	        x *= magnitude * damper;
 	        y *= magnitude * damper;
+
+	        x += originalCamPos.x;
+	        y += originalCamPos.y;
 	        
 	        Camera.main.transform.position = new Vector3(x, y, originalCamPos.z);
 	            
 	        yield return null;
 	    }
 	    
+	    stunned = false;
+
 	    Camera.main.transform.position = originalCamPos;
 	}
 }
