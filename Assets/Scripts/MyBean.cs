@@ -15,6 +15,7 @@ public class MyBean : MonoBehaviour {
 				gameObject.transform.position = player.transform.position;
 				BeanSpawner.SpawnNewBean();
 				Score.AddPoints(250);
+				CoffeeScriptHueHueHue.ReceiveBean();
 			}
 		}
 	}

@@ -32,7 +32,6 @@ public class EnemySpawner : MonoBehaviour {
 			spawnPoints[i].position = spawnPointObjects[i].obj.transform.position;
 			spawnPoints[i].direction = spawnPointObjects[i].direction;
 		}
-
 		enemies = enemyObjects;
 	}
 
