@@ -62,6 +62,14 @@ public class EnemyController : MonoBehaviour {
             Die();
         }
 
+        if (other.tag == "spring"){
+    		Spring spr = other.GetComponent<Spring>();
+    		if(isMovingRight == spr.GoingRight()){
+    			rb.velocity = Vector2.zero;
+    			rb.AddForce(Vector2.up * spr.GetForce());
+    		}
+    	}
+
     }
 
     void Flip()
