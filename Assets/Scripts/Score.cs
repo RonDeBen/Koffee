@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Score : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
+public Text scoreText;
+private static int score;
+
+	void Update(){
+		scoreText.text = "Score: " + score;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public static void AddPoints(int value){
+		score += value;
 	}
 }
