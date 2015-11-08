@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
 	public Sprite leftBody, rightBody;
 
 	public GameObject myBean, leftFoot, rightFoot, body;
+	private SpriteRenderer beanRenderer;
 
 	public float duration, magnitude;
 
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour {
 		leftFootSprender = leftFoot.GetComponent<SpriteRenderer>();
 		rightFootSprender = rightFoot.GetComponent<SpriteRenderer>();
 		bodySprender = body.GetComponent<SpriteRenderer>();
+		beanRenderer = myBean.GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -102,13 +104,11 @@ public class PlayerController : MonoBehaviour {
         if (other.tag == "bean") {
             BeanController bean = other.gameObject.GetComponent<BeanController>();
             bean.Destroy();
-            SpriteRenderer sprender = myBean.GetComponent<SpriteRenderer>();
-            sprender.enabled = true;
+            beanRenderer.enabled = true;
         }
 
         if (other.tag == "goal") {
-            SpriteRenderer sprender = myBean.GetComponent<SpriteRenderer>();
-            if (sprender.enabled) {
+            if (beanRenderer.enabled) {
                 Rigidbody2D rb = myBean.GetComponent<Rigidbody2D>();
                 rb.isKinematic = false;
                 rb.gravityScale = 3f;
@@ -116,6 +116,10 @@ public class PlayerController : MonoBehaviour {
         }
         if (other.tag == "enemy")
         {
+        	if(beanRenderer.enabled){
+        		beanRenderer.enabled = false;
+        		BeanSpawner.SpawnNewBean();
+        	}
             StartCoroutine(Shake());
         }
     }

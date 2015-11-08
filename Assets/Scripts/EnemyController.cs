@@ -5,6 +5,16 @@ public class EnemyController : MonoBehaviour {
 
 	public float speed;
     public GameObject looks;
+    public GameObject triggerObj;
+    private BoxCollider2D triggerCollider;
+
+    private SpriteRenderer[] sprenders;
+
+    public Color flashingColor;
+    public float flashLength;
+    public int numberOfFlashes;
+    private bool flashing = true;
+
 	private Rigidbody2D rb;
 	private Transform leftCheck, rightCheck;
 	bool isMovingRight, rightWall, leftWall;
@@ -15,31 +25,39 @@ public class EnemyController : MonoBehaviour {
 		leftCheck = transform.Find("leftCheck");
 		rightCheck = transform.Find("rightCheck");
 
-		rb.velocity = isMovingRight ? Vector3.right * speed : Vector3.left * speed;
-        if (!isMovingRight)
+		// rb.velocity = isMovingRight ? Vector3.right * speed : Vector3.left * speed;
+        if (!isMovingRight){
             Flip();
+        }
+
+        sprenders = looks.GetComponentsInChildren<SpriteRenderer>();
+        triggerCollider = triggerObj.GetComponent<BoxCollider2D>();
+        triggerCollider.enabled = false;
+
+        StartCoroutine(Flash());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		rightWall = Physics2D.Linecast(gameObject.transform.position, rightCheck.position, 1 << LayerMask.NameToLayer("wall"));
-		leftWall = Physics2D.Linecast(gameObject.transform.position, leftCheck.position, 1 << LayerMask.NameToLayer("wall"));
+		if(!flashing){
+			rightWall = Physics2D.Linecast(gameObject.transform.position, rightCheck.position, 1 << LayerMask.NameToLayer("wall"));
+			leftWall = Physics2D.Linecast(gameObject.transform.position, leftCheck.position, 1 << LayerMask.NameToLayer("wall"));
 
-		if (rightWall && isMovingRight){
-			isMovingRight = false;
-			speed = -speed;
-            Flip();
+			if (rightWall && isMovingRight){
+				isMovingRight = false;
+				speed = -speed;
+	            Flip();
+			}
+
+			if (leftWall && !isMovingRight){
+				isMovingRight = true;
+				speed = -speed;
+	            Flip();
+			}
+
+			Vector3 startVel = rb.velocity;
+			rb.velocity = new Vector3(speed, startVel.y, startVel.z);
 		}
-
-		if (leftWall && !isMovingRight){
-			isMovingRight = true;
-			speed = -speed;
-            Flip();
-		}
-
-		Vector3 startVel = rb.velocity;
-		rb.velocity = new Vector3(speed, startVel.y, startVel.z);
-
 	}
 
 	public void SetDirection(bool isMovingRight){
@@ -77,5 +95,21 @@ public class EnemyController : MonoBehaviour {
         Vector3 toFlip = looks.transform.localScale;
         toFlip.x *= -1;
         looks.transform.localScale = toFlip;
+    }
+
+    IEnumerator Flash(){
+
+    	for (int k = 0; k < numberOfFlashes; k++){
+    		for (int i = 0; i < sprenders.Length; i++){
+    			sprenders[i].color = flashingColor;
+    		}
+    		yield return new WaitForSeconds(flashLength);
+    		for (int i = 0; i < sprenders.Length; i++){
+    			sprenders[i].color = Color.white;
+    		}
+    		yield return new WaitForSeconds(flashLength);
+    	}
+    	triggerCollider.enabled = true;
+    	flashing = false;
     }
 }
