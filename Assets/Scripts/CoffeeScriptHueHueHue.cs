@@ -7,13 +7,17 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 	public Sprite[] coffeeProgressSprites;
 	public GameObject panelObj;
 	public Text gameOverTextObj;
+	public Image loseImageObj, winImageObj;
 	public Color gameOverColor;
+	public Color victoryColor;
     public static CoffeeScriptHueHueHue coffeePot;
-	private static Color panelColor;
+	private static Color winColor, loseColor;
 	private static Sprite[] sprites;
 	private static SpriteRenderer sr;
-	private static Image canvasImage;
+	private static Image canvasImage, winImage, loseImage;
 	private static Text gameOverText;
+
+	private static bool winOrLoss = false;
 
 	private static int beanCount = 1;
 
@@ -30,7 +34,12 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
         }
 		sr = gameObject.GetComponent<SpriteRenderer>();
 		sprites = coffeeProgressSprites;
-		panelColor = gameOverColor;
+		winColor = victoryColor;
+		loseColor = gameOverColor;
+
+		winImage = winImageObj;
+		loseImage = loseImageObj;
+
 		canvasImage = panelObj.GetComponent<Image>();
 		gameOverText = gameOverTextObj;
 	}
@@ -41,13 +50,13 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (gameOverText.enabled && Input.GetKeyDown(KeyCode.R)){
+		if (winOrLoss && Input.GetKeyDown(KeyCode.R)){
 			RestartGame();
 		}
 	}
 
 	public static void RestartGame(){
-		beanCount = 1;
+		beanCount = 0;
 		Application.LoadLevel("final");
 		Time.timeScale = 1;
 	}
@@ -57,7 +66,12 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
         {
             PlayerPrefs.SetInt("Score", Score.GetScore());
             PlayerPrefs.SetInt("Level", Score.GetLevel() + 1);
-            Application.LoadLevel("Win");
+            canvasImage.color = winColor;
+            winImage.enabled = true;
+            Time.timeScale = 0;
+            MusicMiddleware.pauseAllSounds();
+            MusicMiddleware.playSound("Happy Jingle");
+            winOrLoss = true;
         }
         else
         {
@@ -71,9 +85,11 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 
 	public static void ReceiveEnemy(){
 		//you lose the game
+		winOrLoss = true;
+		loseImage.enabled = true;
 		PlayerPrefs.SetInt("Score", 0);
 		PlayerPrefs.SetInt("Level", 1);
-		canvasImage.color = panelColor;
+		canvasImage.color = loseColor;
 		gameOverText.enabled = true;
 		Time.timeScale = 0;
 		MusicMiddleware.pauseAllSounds();
