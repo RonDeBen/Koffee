@@ -3,6 +3,8 @@ using System.Collections;
 
 public class MyBean : MonoBehaviour {
 
+	public GameObject beanHome;
+
 	void OnTriggerEnter2D(Collider2D other){
 		if(other.tag == "coffee_pot"){
 			SpriteRenderer sprender = gameObject.GetComponent<SpriteRenderer>();
@@ -11,8 +13,7 @@ public class MyBean : MonoBehaviour {
 				Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
 				rb.isKinematic = true;
 				rb.gravityScale = 0f;
-				GameObject player = GameObject.FindWithTag("Player");
-				gameObject.transform.position = player.transform.position;
+				gameObject.transform.position = beanHome.transform.position;
 				BeanSpawner.SpawnNewBean();
 				Score.AddPoints(250);
 				CoffeeScriptHueHueHue.ReceiveBean();
