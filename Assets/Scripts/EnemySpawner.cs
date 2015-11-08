@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemySpawner : MonoBehaviour {
 
-	public enum Direction {Left, Right};
+	public enum Direction {Left, Right, Rand};
 
 	[System.Serializable]
 	public struct SpawnPointInspector{
@@ -37,16 +37,16 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	void Start(){
-		// SpawnRandomEnemy();
-		// nextEnemyTime = NextEnemyTime(Mathy.NextGaussianFloat());
+		SpawnRandomEnemy();
+		nextEnemyTime = NextEnemyTime(Mathy.NextGaussianFloat());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		// if(Time.time > nextEnemyTime){
-		// 	SpawnRandomEnemy();
-		// 	nextEnemyTime = NextEnemyTime(Mathy.NextGaussianFloat());
-		// }
+		if(Time.time > nextEnemyTime){
+			SpawnRandomEnemy();
+			nextEnemyTime = NextEnemyTime(Mathy.NextGaussianFloat());
+		}
 	}
 
 	private float NextEnemyTime(float gauss){
@@ -76,6 +76,10 @@ public class EnemySpawner : MonoBehaviour {
 		SpawnPoint spawnPoint = spawnPoints[Random.Range(0,spawnPoints.Length)];
 		GameObject go = Instantiate(enemies[Random.Range(0, enemies.Length)], spawnPoint.position, Quaternion.identity) as GameObject;
 		EnemyController ec = go.GetComponent<EnemyController>();
-		ec.SetDirection(spawnPoint.direction == Direction.Right);
+		if (spawnPoint.direction == Direction.Rand){
+			ec.SetDirection(Random.value > 0.5f);
+		} else {
+			ec.SetDirection(spawnPoint.direction == Direction.Right);
+		}
 	}
 }
