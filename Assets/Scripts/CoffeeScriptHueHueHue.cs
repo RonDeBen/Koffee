@@ -19,7 +19,7 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         if(coffeePot != null)
         {
             GameObject.Destroy(gameObject);
@@ -33,6 +33,10 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 		panelColor = gameOverColor;
 		canvasImage = panelObj.GetComponent<Image>();
 		gameOverText = gameOverTextObj;
+	}
+
+	void Start(){
+		MusicMiddleware.loopSound("Yo Cuppa Joe", true);
 	}
 	
 	// Update is called once per frame
@@ -72,6 +76,8 @@ public class CoffeeScriptHueHueHue : MonoBehaviour {
 		canvasImage.color = panelColor;
 		gameOverText.enabled = true;
 		Time.timeScale = 0;
+		MusicMiddleware.pauseAllSounds();
+		MusicMiddleware.playSound("Sad Jingle");
 	}
 
 }

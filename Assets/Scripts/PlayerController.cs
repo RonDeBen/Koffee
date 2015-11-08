@@ -164,6 +164,8 @@ public class PlayerController : MonoBehaviour {
 
     IEnumerator Shake() {
 
+    	MusicMiddleware.playSound("Bad Sound");
+
     	stunned = true;
     	rb.velocity = Vector3.zero;
 	        

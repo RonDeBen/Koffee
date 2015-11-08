@@ -79,6 +79,7 @@ public class EnemyController : MonoBehaviour {
     {
         if (other.tag.Equals("sword"))
         {
+            MusicMiddleware.playSound("baaaa (sheep.com)");
             Die();
         }
 

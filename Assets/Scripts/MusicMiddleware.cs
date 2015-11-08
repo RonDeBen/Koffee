@@ -59,8 +59,8 @@ public class MusicMiddleware : MonoBehaviour {
         pauseEntry.source.Pause();
     }
 
-    public void pauseAllSounds(){
-        foreach(SoundEntry sound in sounds){
+    public static void pauseAllSounds(){
+        foreach(SoundEntry sound in staticSounds){
             sound.source.Pause();
         }
     }
@@ -69,27 +69,21 @@ public class MusicMiddleware : MonoBehaviour {
         foreach(SoundEntry sound in sounds){
             sound.source = gameObject.AddComponent<AudioSource>() as AudioSource;
             sound.source.clip = sound.sound;
-            if(sound.loopEndTime <= 0.0f)
-                sound.loopEndTime = sound.source.clip.length;
-            sound.looping = false;
         }
 
         staticSounds = sounds;
-        for (int k = 0; k < sounds.Count; k++){
-        	Debug.Log(sounds[k].sound.name);
-        }
     }
 
-    void Update(){
-        foreach(SoundEntry sound in sounds){
-            if(sound.looping){
-                if(!sound.source.isPlaying || sound.source.time >= sound.loopEndTime - 0.1f){
-                    sound.source.time = sound.loopStartTime;
-                }
-                /*if(sound.source.time >= sound.loopStartTime + 5.0f && sound.source.time <= sound.loopEndTime - 5.0f){
-                    sound.source.time = sound.loopEndTime - 5.0f;
-                }*/
-            }
-        }
-    }
+    // void Update(){
+    //     foreach(SoundEntry sound in sounds){
+    //         if(sound.looping){
+    //             if(!sound.source.isPlaying || sound.source.time >= sound.loopEndTime - 0.1f){
+    //                 sound.source.time = sound.loopStartTime;
+    //             }
+    //             /*if(sound.source.time >= sound.loopStartTime + 5.0f && sound.source.time <= sound.loopEndTime - 5.0f){
+    //                 sound.source.time = sound.loopEndTime - 5.0f;
+    //             }*/
+    //         }
+    //     }
+    // }
 }
