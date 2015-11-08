@@ -117,6 +117,8 @@ public class PlayerController : MonoBehaviour {
         if (other.tag == "enemy")
         {
         	if(beanRenderer.enabled){
+        		Rigidbody2D beanrb = myBean.GetComponent<Rigidbody2D>();
+        		beanrb.isKinematic = true;
         		beanRenderer.enabled = false;
         		BeanSpawner.SpawnNewBean();
         	}
