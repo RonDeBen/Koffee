@@ -37,16 +37,16 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	void Start(){
-		SpawnRandomEnemy();
-		nextEnemyTime = NextEnemyTime(Mathy.NextGaussianFloat());
+		// SpawnRandomEnemy();
+		// nextEnemyTime = NextEnemyTime(Mathy.NextGaussianFloat());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time > nextEnemyTime){
-			SpawnRandomEnemy();
-			nextEnemyTime = NextEnemyTime(Mathy.NextGaussianFloat());
-		}
+		// if(Time.time > nextEnemyTime){
+		// 	SpawnRandomEnemy();
+		// 	nextEnemyTime = NextEnemyTime(Mathy.NextGaussianFloat());
+		// }
 	}
 
 	private float NextEnemyTime(float gauss){

@@ -27,24 +27,31 @@ public class EnemyController : MonoBehaviour {
 
 		if (rightWall && isMovingRight){
 			isMovingRight = false;
-			rb.velocity = Vector3.left * speed;
+			speed = -speed;
             Flip();
 		}
 
 		if (leftWall && !isMovingRight){
 			isMovingRight = true;
-			rb.velocity = Vector3.right * speed;
+			speed = -speed;
             Flip();
 		}
+
+		Vector3 startVel = rb.velocity;
+		rb.velocity = new Vector3(speed, startVel.y, startVel.z);
 
 	}
 
 	public void SetDirection(bool isMovingRight){
 		this.isMovingRight = isMovingRight;
+		if (!isMovingRight){
+			speed = -speed;
+		}
 	}
 
     private void Die()
     {
+    	Score.AddPoints(50);
         GameObject.Destroy(this.gameObject);
     }
 

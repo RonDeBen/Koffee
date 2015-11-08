@@ -14,6 +14,7 @@ public class MyBean : MonoBehaviour {
 				GameObject player = GameObject.FindWithTag("Player");
 				gameObject.transform.position = player.transform.position;
 				BeanSpawner.SpawnNewBean();
+				Score.AddPoints(250);
 			}
 		}
 	}
