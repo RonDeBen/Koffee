@@ -46,16 +46,16 @@ public class PlayerController : MonoBehaviour {
 		if (!stunned){
 			grounded = Physics2D.Linecast(gameObject.transform.position, groundCheck.position, (1 << LayerMask.NameToLayer("floor")) | (1<<LayerMask.NameToLayer("wall"))); 
 
-			bool left = Input.GetKey("left");
-			bool right = Input.GetKey("right");
-			bool jump = Input.GetKeyDown(KeyCode.Z);
-			bool attack = Input.GetKeyDown(KeyCode.X);
+			bool left = Input.GetAxisRaw("Horizontal") < 0;
+			bool right = Input.GetAxisRaw("Horizontal") > 0;
+            bool jump = Input.GetButtonDown("Jump");
+			bool attack = Input.GetButtonDown("Fire1"); ;
 
 
 			if (left){
 				rb.velocity = new Vector3(-speed, rb.velocity.y, 0f);
-				leftFootSprender.sortingOrder = -1;
-				rightFootSprender.sortingOrder = 2;
+				leftFootSprender.sortingOrder = 2;
+				rightFootSprender.sortingOrder = -1;
 				bodySprender.sprite = leftBody;
 	            if (m_FacingRight)
 	            {
@@ -67,8 +67,8 @@ public class PlayerController : MonoBehaviour {
 			if (right){
 				rb.velocity = new Vector3(speed, rb.velocity.y, 0f);
 				bodySprender.sprite = rightBody;
-				leftFootSprender.sortingOrder = 2;
-				rightFootSprender.sortingOrder = -1;
+				leftFootSprender.sortingOrder = -1;
+				rightFootSprender.sortingOrder = 2;
 	            if (!m_FacingRight)
 	            {
 	                Flip();
